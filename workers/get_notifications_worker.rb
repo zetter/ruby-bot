@@ -2,7 +2,7 @@ class GetNotificationsWorker
   include Sidekiq::Job
 
   def perform
-    $mastodon.get('/api/v1/notifications').body.each do |notification|
+    $mastodon.get('/api/v1/notifications?types[]=mention').body.each do |notification|
       id = notification.fetch('id')
       sender = notification.dig('account', 'acct')
       status_id = notification.dig('status', 'id')
