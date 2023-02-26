@@ -1,4 +1,4 @@
-class GetNotificationsWoker
+class GetNotificationsWorker
   include Sidekiq::Job
 
   def perform
