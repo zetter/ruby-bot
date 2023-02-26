@@ -10,14 +10,14 @@ class GetNotificationsWoker
       content = notification.dig('status', 'content')
 
       $mastodon.post("/api/v1/notifications/#{id}/dismiss")
-      
-      puts {
+      data = {
         id:,
         sender:,
         status_id:,
         status_url:,
         content:
-      }.inspect
+      }
+      puts data.inspect
     end
   end
 end
