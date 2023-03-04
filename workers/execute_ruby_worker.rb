@@ -38,7 +38,7 @@ class ExecuteRubyWorker
   end
 
   def program(content)
-    doc = Nokogiri.parse(content)
+    doc = Nokogiri::HTML5.fragment(content)
     doc.css('.mention,h-card').remove
     parse_program(doc.children).flatten.compact.join
   end
