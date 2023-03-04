@@ -1,0 +1,43 @@
+<html>
+  <script src="https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@latest/dist/browser.umd.js"></script>
+  <script>
+    window.data = <%= ERB::Util.json_escape(data) %>;
+  </script>
+  <script>
+    const { DefaultRubyVM } = window["ruby-wasm-wasi"];
+
+    const withOutputRedirection = (func) => {
+      const output = []
+      const oldLog = console.log
+      try {
+        console.log = (a) => { oldLog(a);output.push(a) }
+        func()
+        return output        
+      } finally {
+        console.log = oldLog
+      }
+    }
+  
+    const main = async () => {
+      const response = await fetch(
+        "https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@latest/dist/ruby+stdlib.wasm"
+      );
+      const buffer = await response.arrayBuffer();
+      const module = await WebAssembly.compile(buffer);
+      const { vm } = await DefaultRubyVM(module);
+      let result = null
+      console.log(window.data.program)
+      
+      const output = withOutputRedirection(() => {
+        result = vm.eval(window.data.program).toString();
+      })
+
+      console.log(result)
+      console.log(output)
+    };
+
+    main();
+  </script>
+  <body>
+  </body>
+</html>

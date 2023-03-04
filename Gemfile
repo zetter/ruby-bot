@@ -10,3 +10,4 @@ gem "redis"
 gem 'redis-namespace'
 gem "thin"
 gem 'faraday'
+gem 'activesupport'

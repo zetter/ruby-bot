@@ -5,6 +5,8 @@ require 'sidekiq'
 require './sidekiq_settings'
 require './workers/execute_ruby_worker'
 require './workers/get_notifications_worker'
+require 'active_support/core_ext/string/output_safety'
+
 
 require 'faraday'
 
