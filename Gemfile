@@ -11,3 +11,5 @@ gem 'redis-namespace'
 gem "thin"
 gem 'faraday'
 gem 'activesupport'
+gem 'puppeteer-ruby'
+gem 'nokogiri'
