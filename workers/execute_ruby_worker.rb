@@ -22,7 +22,7 @@ class ExecuteRubyWorker
       result = JSON.parse(page.eval_on_selector('#result', '(el) => el.textContent'))
     end
 
-    reply = if result['output'] 
+    reply = if result['output'].any?
       result['output'].join()
     else
       "=> #{result['output']}"
