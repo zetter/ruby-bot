@@ -25,7 +25,7 @@ class ExecuteRubyWorker
     reply = if result['output'].any?
       result['output'].join()
     else
-      "=> #{result['output']}"
+      "=> #{result['evaluation']}"
     end
 
     status = "@#{handle}\n#{reply}"
