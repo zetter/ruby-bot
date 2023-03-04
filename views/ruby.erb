@@ -25,15 +25,19 @@
       const buffer = await response.arrayBuffer();
       const module = await WebAssembly.compile(buffer);
       const { vm } = await DefaultRubyVM(module);
-      let result = null
+      let evaluation = null
       console.log(window.data.program)
       
       const output = withOutputRedirection(() => {
-        result = vm.eval(window.data.program).toString();
+        evaluation = vm.eval(window.data.program).toString();
       })
 
-      console.log(result)
-      console.log(output)
+      const result = JSON.stringify({evaluation, output})
+      const resultTag = document.createElement("div");
+      resultTag.id = 'result'
+      const resultText = document.createTextNode(result);
+      resultTag.appendChild(resultText);
+      document.body.appendChild(resultTag);
     };
 
     main();
