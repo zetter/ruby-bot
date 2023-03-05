@@ -13,3 +13,7 @@ gem 'faraday'
 gem 'activesupport'
 gem 'puppeteer-ruby'
 gem 'nokogiri'
+
+group :development, :test do
+  gem 'rspec'
+end
