@@ -9,16 +9,7 @@ class ExecuteRubyWorker
     response = $mastodon.get("/api/v1/statuses/#{mention_id}")
     mention = Mention.new(response.body)
 
-    result = nil
-    Puppeteer.launch(headless: true) do |browser|
-      page = browser.new_page
-      params = {
-        program: mention.program
-      }
-      page.goto("https://ruby-bot.d2.chriszetter.com/ruby?#{params.to_param}")
-      page.wait_for_selector('#result', timeout: 30_000)
-      result = JSON.parse(page.eval_on_selector('#result', '(el) => el.textContent'))
-    end
+    result = run_code(metion.program)
 
     reply = if result['output'].any?
       result['output'].join()
@@ -32,6 +23,16 @@ class ExecuteRubyWorker
       req.headers['Idempotency-Key'] = mention_id
       req.headers['Content-Type'] = 'application/json'
       req.body = {status:, in_reply_to_id: mention_id, visibility: mention.visibility}.to_json
+    end
+  end
+
+  def run_code(program)
+    Puppeteer.launch(headless: true) do |browser|
+      page = browser.new_page
+      params = { program: }
+      page.goto("https://ruby-bot.d2.chriszetter.com/ruby?#{params.to_param}")
+      page.wait_for_selector('#result', timeout: 30_000)
+      return JSON.parse(page.eval_on_selector('#result', '(el) => el.textContent'))
     end
   end
 end
