@@ -22,7 +22,7 @@ class ExecuteRubyWorker
     Puppeteer.launch(headless: true) do |browser|
       page = browser.new_page
       params = { program: }
-      page.goto("https://ruby-bot.d2.chriszetter.com/ruby?#{params.to_param}")
+      page.goto("#{ENV['HOST_URL']}/ruby?#{params.to_param}")
       page.wait_for_selector('#result', timeout: 30_000)
       return JSON.parse(page.eval_on_selector('#result', '(el) => el.textContent'))
     end
