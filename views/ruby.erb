@@ -17,6 +17,15 @@
         console.log = oldLog
       }
     }
+
+    const addResultToDom = (result) => {
+      const resultData = JSON.stringify(result)
+      const resultTag = document.createElement("div");
+      resultTag.id = 'result'
+      const resultText = document.createTextNode(resultData);
+      resultTag.appendChild(resultText);
+      document.body.appendChild(resultTag);
+    }
   
     const main = async () => {
       const response = await fetch(
@@ -26,18 +35,13 @@
       const module = await WebAssembly.compile(buffer);
       const { vm } = await DefaultRubyVM(module);
       let evaluation = null
-      
+
       const output = withOutputRedirection(() => {
         const evaluationValue = vm.eval(window.data.program)
         evaluation = evaluationValue.call('inspect').toString();
       })
 
-      const result = JSON.stringify({evaluation, output})
-      const resultTag = document.createElement("div");
-      resultTag.id = 'result'
-      const resultText = document.createTextNode(result);
-      resultTag.appendChild(resultText);
-      document.body.appendChild(resultTag);
+      addResultToDom({output, evaluation})
     };
 
     main();
