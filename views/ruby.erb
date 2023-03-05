@@ -29,7 +29,8 @@
       console.log(window.data.program)
       
       const output = withOutputRedirection(() => {
-        evaluation = vm.eval(window.data.program).toString();
+        const evaluationValue = vm.eval(window.data.program)
+        evaluation = evaluationValue.call('inspect').toString();
       })
 
       const result = JSON.stringify({evaluation, output})
