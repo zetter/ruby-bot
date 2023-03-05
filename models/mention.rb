@@ -2,19 +2,23 @@ class Mention
   attr_reader :mention
 
   def initialize(mention)
-    @mention = mention
+    @mention = mention.deep_symbolize_keys
   end
 
   def content
-    mention.fetch('content')
+    mention.fetch(:content)
   end
 
   def visibility
-    mention.fetch('visibility')
+    mention.fetch(:visibility)
   end
 
   def handle
-    status.dig('account', 'acct')
+    mention.dig(:account, :acct)
+  end
+
+  def id
+    mention.fetch(:id)
   end
   
   def program

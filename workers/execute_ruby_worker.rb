@@ -8,21 +8,13 @@ class ExecuteRubyWorker
     puts "Executing #{mention_id}"
     response = $mastodon.get("/api/v1/statuses/#{mention_id}")
     mention = Mention.new(response.body)
-
     result = run_code(metion.program)
-
-    reply = if result['output'].any?
-      result['output'].join()
-    else
-      "=> #{result['evaluation']}"
-    end
-
-    status = "@#{mention.handle}\n#{reply}"
+    reply = Reply.new(result:, mention: mention)
 
     $mastodon.post("/api/v1/statuses") do |req|
       req.headers['Idempotency-Key'] = mention_id
       req.headers['Content-Type'] = 'application/json'
-      req.body = {status:, in_reply_to_id: mention_id, visibility: mention.visibility}.to_json
+      req.body = reply.fields_for_api.to_json
     end
   end
 
