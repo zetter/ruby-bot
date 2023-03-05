@@ -17,11 +17,13 @@ class Reply
   private
 
   def result_text
-    if output.any? || error
+    text = if output.any? || error
       output.concat([error || '']).join
     else
       "=> #{evaluation}"
     end
+
+    text.gsub('@', '﹫')
   end
 
   def output

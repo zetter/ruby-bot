@@ -16,6 +16,11 @@ RSpec.describe Reply do
       reply = described_class.new(mention:, result: {evaluation: nil, error: 'error message', output: ["1\n"]})
       expect(reply.text).to eq("@test@example.com\n1\nerror message")
     end
+
+    it 'escapes mentions produced by the program' do
+      reply = described_class.new(mention:, result: {evaluation: '@spam@example.com'})
+      expect(reply.text).to eq("@test@example.com\n=> ﹫spam﹫example.com")
+    end
   end
 
   describe '#fields_for_api' do
