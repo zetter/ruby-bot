@@ -34,14 +34,19 @@
       const buffer = await response.arrayBuffer();
       const module = await WebAssembly.compile(buffer);
       const { vm } = await DefaultRubyVM(module);
-      let evaluation = null
+      let evaluation, error
 
       const output = withOutputRedirection(() => {
-        const evaluationValue = vm.eval(window.data.program)
-        evaluation = evaluationValue.call('inspect').toString();
+        try {
+          const evaluationValue = vm.eval(window.data.program)
+          evaluation = evaluationValue.call('inspect').toString();
+        } catch(e) {
+          error = e.message
+        }
+
       })
 
-      addResultToDom({output, evaluation})
+      addResultToDom({output, evaluation, error})
     };
 
     main();

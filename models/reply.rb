@@ -17,10 +17,22 @@ class Reply
   private
 
   def result_text
-    if result[:output].any?
-      result[:output].join()
+    if output.any? || error
+      output.concat([error || '']).join
     else
-      "=> #{result[:evaluation]}"
+      "=> #{evaluation}"
     end
+  end
+
+  def output
+    result.fetch(:output, [])
+  end
+
+  def error
+    result[:error]
+  end
+
+  def evaluation
+    result[:evaluation]
   end
 end

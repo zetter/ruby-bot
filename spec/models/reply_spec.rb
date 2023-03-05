@@ -11,6 +11,11 @@ RSpec.describe Reply do
       reply = described_class.new(mention:, result: {evaluation: 'hi', output: ["1\n", "2\n"]})
       expect(reply.text).to eq("@test@example.com\n1\n2\n")
     end
+
+    it 'adds error after output if present' do
+      reply = described_class.new(mention:, result: {evaluation: nil, error: 'error message', output: ["1\n"]})
+      expect(reply.text).to eq("@test@example.com\n1\nerror message")
+    end
   end
 
   describe '#fields_for_api' do
