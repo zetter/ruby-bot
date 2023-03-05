@@ -26,7 +26,6 @@
       const module = await WebAssembly.compile(buffer);
       const { vm } = await DefaultRubyVM(module);
       let evaluation = null
-      console.log(window.data.program)
       
       const output = withOutputRedirection(() => {
         const evaluationValue = vm.eval(window.data.program)
