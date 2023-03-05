@@ -8,7 +8,7 @@ class ExecuteRubyWorker
     puts "Executing #{mention_id}"
     response = $mastodon.get("/api/v1/statuses/#{mention_id}")
     mention = Mention.new(response.body)
-    result = run_code(metion.program)
+    result = run_code(mention.program)
     reply = Reply.new(result:, mention: mention)
 
     $mastodon.post("/api/v1/statuses") do |req|
