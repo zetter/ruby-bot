@@ -20,7 +20,7 @@ class Mention
   def program
     doc = Nokogiri::HTML5.fragment(content)
     doc.css('.mention,h-card').remove
-    parse_program(doc.children).flatten.compact.join
+    parse_program(doc.children).flatten.compact.join.strip
   end
 
   private
@@ -29,6 +29,8 @@ class Mention
     nodes.map do |node| 
       if node.name == 'br'
         ["\n", parse_program(node.children)]
+      elsif node.name == 'p'
+        [parse_program(node.children), "\n"]
       elsif node.text?
         node.text
       elsif node.children.any?
