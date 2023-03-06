@@ -15,8 +15,8 @@ require 'active_support/core_ext/hash/keys'
 require 'faraday'
 
 $mastodon = Faraday.new(
-  url: ENV['MASTODON_URL'],
-  headers: {'Content-Type' => 'application/json', "Authorization" => "Bearer #{ENV['MASTODON_ACCOUNT_TOKEN']}"}
+  url: ENV.fetch('MASTODON_URL'),
+  headers: {'Content-Type' => 'application/json', "Authorization" => "Bearer #{ENV.fetch('MASTODON_ACCOUNT_TOKEN')}"}
 ) do |f|
   f.response :json
 end
