@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/ClearlyClaire/webpush.git
+  revision: f14a4d52e201128b1b00245d11b6de80d6cfdcd9
+  ref: f14a4d52e201128b1b00245d11b6de80d6cfdcd9
+  specs:
+    webpush (0.3.8)
+      hkdf (~> 0.2)
+      jwt (~> 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -15,8 +24,10 @@ GEM
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
+    hkdf (0.3.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    jwt (2.7.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
@@ -91,6 +102,7 @@ DEPENDENCIES
   sidekiq
   sinatra
   thin
+  webpush!
 
 RUBY VERSION
    ruby 3.2.1p31
