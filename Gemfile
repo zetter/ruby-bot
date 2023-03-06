@@ -13,6 +13,7 @@ gem 'faraday'
 gem 'activesupport'
 gem 'puppeteer-ruby'
 gem 'nokogiri'
+gem 'dotenv'
 gem 'webpush', github: 'ClearlyClaire/webpush', ref: 'f14a4d52e201128b1b00245d11b6de80d6cfdcd9'
 
 group :development, :test do

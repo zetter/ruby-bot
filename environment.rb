@@ -1,6 +1,15 @@
 require 'rubygems'
 require 'bundler/setup'
+
+require 'dotenv'
 require 'sidekiq'
+
+if ENV['RACK_ENV'] == 'test'
+  Dotenv.load('.env.test')
+elsif ENV['RACK_ENV'] == 'development'
+  Dotenv.load('.env.dev')
+end
+
 
 require './sidekiq_settings'
 require './workers/execute_ruby_worker'
