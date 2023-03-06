@@ -13,7 +13,6 @@ class ExecuteRubyWorker
 
     $mastodon.post("/api/v1/statuses") do |req|
       req.headers['Idempotency-Key'] = mention_id
-      req.headers['Content-Type'] = 'application/json'
       req.body = reply.fields_for_api.to_json
     end
   end
