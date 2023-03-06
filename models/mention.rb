@@ -24,21 +24,31 @@ class Mention
   def program
     doc = Nokogiri::HTML5.fragment(content)
     doc.css('.mention,h-card').remove
-    parse_program(doc.children).flatten.compact.join.strip
+    text = convert_entities(doc.children).flatten.compact.join
+    extract_program(text).strip
   end
 
   private
 
-  def parse_program(nodes)
+  def extract_program(string)
+    segments = string.split('```')
+    if segments.length == 3
+      segments[1]
+    else
+      string
+    end
+  end
+
+  def convert_entities(nodes)
     nodes.map do |node| 
       if node.name == 'br'
-        ["\n", parse_program(node.children)]
+        ["\n", convert_entities(node.children)]
       elsif node.name == 'p'
-        [parse_program(node.children), "\n"]
+        [convert_entities(node.children), "\n"]
       elsif node.text?
         node.text
       elsif node.children.any?
-        parse_program(node.children)
+        convert_entities(node.children)
       end
     end
   end  
