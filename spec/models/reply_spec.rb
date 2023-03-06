@@ -21,6 +21,12 @@ RSpec.describe Reply do
       reply = described_class.new(mention:, result: {evaluation: '@spam@example.com'})
       expect(reply.text).to eq("@test@example.com\n=> ﹫spam﹫example.com")
     end
+
+    it 'truncates the text' do
+      reply = described_class.new(mention:, result: {evaluation: 'abcdefghijklmnopqrstuvwxyz'}, maximum_length: 40)
+      expect(reply.text).to eq("@test@example.com\n=> abcdefgh[TRUNCATED]")
+      expect(reply.text.length).to eq(40)
+    end
   end
 
   describe '#fields_for_api' do

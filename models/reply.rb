@@ -1,13 +1,17 @@
 class Reply
-  attr_reader :mention, :result
+  attr_reader :mention, :result, :maximum_length
 
-  def initialize(result:, mention:)
+  DEFAULT_MAXIMUM_LENGTH = 500
+  TRUNCATION_MESSAGE = '[TRUNCATED]'
+
+  def initialize(result:, mention:, maximum_length: DEFAULT_MAXIMUM_LENGTH)
+    @maximum_length = maximum_length
     @result = result.deep_symbolize_keys
     @mention = mention
   end
 
   def text
-    "@#{mention.handle}\n#{result_text}"
+    ensure_under_maximum_length("@#{mention.handle}\n#{result_text}")
   end
 
   def fields_for_api
@@ -24,6 +28,15 @@ class Reply
     end
 
     text.gsub('@', '﹫')
+  end
+
+  def ensure_under_maximum_length(string)
+    if string.length > maximum_length
+      truncate_to = maximum_length - TRUNCATION_MESSAGE.length
+      string.slice(0, truncate_to) + TRUNCATION_MESSAGE
+    else
+      string
+    end
   end
 
   def output
