@@ -31,6 +31,12 @@ RSpec.describe Mention do
       expect(mention.program).to eq("10*10\n20*20")
     end
 
+    it 'normalizes quotes' do
+      content = %Q[<p>#{mention}</p><p>'abc' "abc" ‘abc’ “abc”</p>]
+      mention = described_class.new({content: content})
+      expect(mention.program).to eq(%q['abc' "abc" 'abc' "abc"])
+    end
+
     it 'lets you use ``` to specify the program to run' do
       content = "<p>#{mention}</p><p>not ruby</p><p>```<br>10*10</p><p>20*20<br>```</p>"
       mention = described_class.new({content: content})

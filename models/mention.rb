@@ -25,10 +25,14 @@ class Mention
     doc = Nokogiri::HTML5.fragment(content)
     doc.css('.mention,h-card').remove
     text = convert_entities(doc.children).flatten.compact.join
-    extract_program(text).strip
+    normalize_quotes(extract_program(text)).strip
   end
 
   private
+
+  def normalize_quotes(string)
+    string.gsub(/[‘’]/, "'").gsub(/[“”]/, '"')
+  end
 
   def extract_program(string)
     segments = string.split('```')
