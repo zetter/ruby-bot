@@ -1,6 +1,18 @@
 RSpec.describe Reply do
   let(:mention) { Mention.new({id: '123', visibility: 'public', account: {acct: 'test@example.com'}}) }
 
+  describe '#visibility' do
+    it 'sets replies of public mentions to unlisted' do
+      reply = described_class.new(mention: Mention.new({visibility: 'public'}), result: {})
+      expect(reply.visibility).to eq("unlisted")
+    end
+
+    it 'uses replies of public mentions to unlisted' do
+      reply = described_class.new(mention: Mention.new({visibility: 'private'}), result: {})
+      expect(reply.visibility).to eq("private")
+    end
+  end
+
   describe '#text' do 
     it 'builds reply from evaulation' do
       reply = described_class.new(mention:, result: {evaluation: 'hi', output: []})
@@ -32,7 +44,7 @@ RSpec.describe Reply do
   describe '#fields_for_api' do
     it 'returns the fields needed to create a status' do
       reply = described_class.new(mention:, result: {evaluation: 'hi', output: []})
-      expect(reply.fields_for_api).to eq({status: "@test@example.com\n=> hi", visibility: 'public', in_reply_to_id: '123'})
+      expect(reply.fields_for_api).to eq({status: "@test@example.com\n=> hi", visibility: 'unlisted', in_reply_to_id: '123'})
     end
   end
 end

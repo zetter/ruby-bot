@@ -14,8 +14,17 @@ class Reply
     ensure_under_maximum_length("@#{mention.handle}\n#{result_text}")
   end
 
+  def visibility
+    if mention.visibility == 'public'
+      'unlisted'
+    else
+      mention.visibility
+    end
+  end
+  
+
   def fields_for_api
-    {status: text, in_reply_to_id: mention.id, visibility: mention.visibility}
+    {status: text, in_reply_to_id: mention.id, visibility:}
   end
 
   private
